@@ -1,0 +1,24 @@
+@import "reboot.css";
+
+.window-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+  text-align: center;
+  line-height: 1.5em;
+}
+
+.window-content > div {
+  /* display: flex; */
+  /* flex-direction: column; */
+  /* justify-content: center; */
+  align-content: center;
+  /* border: 1px solid tomato; */
+}
+
+.window-content > div:last-child {
+  margin-top: auto;
+  padding: 0 0 2em;
+}
