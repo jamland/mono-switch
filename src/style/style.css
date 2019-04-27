@@ -10,6 +10,11 @@
   line-height: 1.5em;
 }
 
+img {
+  user-select: none;
+  pointer-events: none;
+}
+
 .window-content > div {
   /* display: flex; */
   /* flex-direction: column; */

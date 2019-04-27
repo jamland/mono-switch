@@ -1,17 +1,15 @@
 const path = require('path')
 const applescript = require('applescript')
-const { showNotification, updateTray } = require('./utils')
 const { CHANNELS, SHORTCUTS } = require('./constants')
 
-const scriptDoSwitch = path.join(__dirname, './system/monoStereoSwitch.applescript')
-const scriptGetValue = path.join(__dirname, './system/getMonoStereoState.applescript')
+const scriptDoSwitch = path.join(__dirname, './applescript/monoStereoSwitch.applescript')
+const scriptGetValue = path.join(__dirname, './applescript/getMonoStereoState.applescript')
 
-const runMonoStereoToggleRoutine = () => {
+const runMonoStereoToggleAction = (callback) => {
   toggleMonoStereo( (value) => {
     getCurrentValueOfMonoStereo( (value) => {
       if (value === CHANNELS.STEREO || value === CHANNELS.MONO) {
-        showNotification(value)
-        updateTray(value === CHANNELS.MONO)
+        callback(value)
       } else {
         console.log('🚧 applescript failed to exec. value is:', value)
       }
@@ -38,5 +36,5 @@ const runScript = (script, callback) => {
 }
 
 module.exports = {
-  runMonoStereoToggleRoutine
+  runMonoStereoToggleAction
 }

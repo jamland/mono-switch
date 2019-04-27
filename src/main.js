@@ -1,17 +1,16 @@
 const { 
   app, 
+  shell,
   BrowserWindow, 
   Menu,
   globalShortcut,
   Tray,
   systemPreferences,
+  ipcMain,
 } = require('electron')
-const { runMonoStereoToggleRoutine } = require('./monoStereoSwitch')
+const { runMonoStereoToggleAction } = require('./monoStereoSwitch')
 const { 
   showNotification, 
-  updateTray,
-  setOSTheme,
-  createTray,
 } = require('./utils')
 const { CHANNELS, SHORTCUTS } = require('./constants')
 const path = require('path')
@@ -27,6 +26,8 @@ require('electron-reload')(__dirname, {
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
 let window;
+let tray = undefined;
+let theme;
 
 // app.dock.hide()
 
@@ -41,9 +42,8 @@ app.on('ready', () => {
       updateTheme,
       )
   }
-
-  createTray(window, app)
-  createWindow()
+  createTray()
+  // createWindow()
 })
 
 const updateTheme = () => {
@@ -63,9 +63,14 @@ const updateTheme = () => {
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
-  if (window === null) {
-    createWindow()
-  }
+})
+
+// Don't show the app in the doc
+app.dock.hide()
+
+ipcMain.on('link-clicked', (event, arg) => {
+  if (arg) shell.openExternal(arg);
+  // event.returnValue = 'pong'
 })
 
 
@@ -75,7 +80,6 @@ const createWindow = () => {
     height: 350,
     center: true,
     icon: 'app/assets/icons/png/icon_512x512@2x.png',
-    // show: false,
     fullscreen: false,
     fullscreenable: false,
     resizable: false,
@@ -86,6 +90,14 @@ const createWindow = () => {
     }
   })
   window.loadFile('app/index.html')
+  window.once('ready-to-show', () => {
+    window.show()
+  })
+  window.on('closed', () => {
+    window = null  
+  })
+
+  
 
   // Hide the window when it loses focus
   // window.on('blur', () => {
@@ -121,5 +133,62 @@ const createWindow = () => {
     SHORTCUTS.TOGGLE_MONO, 
     runMonoStereoToggleRoutine
   )
+}
 
+
+
+const createTray = () => {
+  const themeAddon = theme === 'dark' ? '-dark_theme' : ''
+  tray = new Tray(path.join(`app/images/icon-tray${themeAddon}.png`))
+
+  const contextMenu = Menu.buildFromTemplate([
+    { 
+      label: 'Toggle mono', 
+      click () {
+        runMonoStereoToggleRoutine();
+      },
+      accelerator: SHORTCUTS.TOGGLE_MONO,
+    },
+    { type: 'separator' },
+    { 
+      label: 'About', 
+      click () {
+        showAboutWindow()
+      },
+      // accelerator: SHORTCUTS.TOGGLE_MONO,
+    },
+    { 
+      label: 'Exit', 
+      click () {
+        app.quit()
+      }
+     }
+  ])
+  tray.setContextMenu(contextMenu)
+}
+
+const showAboutWindow = () => {
+  if (!window) {
+    createWindow()
+  } else {
+    window.focus()
+  }
+}
+
+const updateTray = (active = false) => {
+  const activePostfix = active ? '-active' : '';
+  const themePostfix = theme === 'dark' ? '-dark_theme' : ''
+  tray.setImage(path.join(`app/images/icon-tray${activePostfix}${themePostfix}.png`))
+}
+
+
+const setOSTheme = () => {
+  theme = systemPreferences.isDarkMode() ? 'dark' : 'light'
+}
+
+const runMonoStereoToggleRoutine = () => {
+  runMonoStereoToggleAction((value) => {
+    showNotification(value)
+    updateTray(value === CHANNELS.MONO)
+  })
 }

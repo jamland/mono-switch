@@ -1,6 +1,0 @@
-1. The only information accessed by app on you computer is state of: 
-System Settings / Accessibility / Play stereo audio as mono checkbox
-
-2. No personal data is collected, stored or shared w/ 3rd parties.
-
-3. Any changes to this file will popup to the user with Accept action.
