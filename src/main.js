@@ -6,7 +6,6 @@ const {
   globalShortcut,
   Tray,
   systemPreferences,
-  ipcMain,
 } = require('electron')
 const { runMonoStereoToggleAction } = require('./monoStereoSwitch')
 const { 
@@ -29,8 +28,6 @@ let window;
 let tray = undefined;
 let theme;
 
-// app.dock.hide()
-
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -43,7 +40,7 @@ app.on('ready', () => {
       )
   }
   createTray()
-  // createWindow()
+  setGlobalShortcuts()
 })
 
 const updateTheme = () => {
@@ -68,10 +65,12 @@ app.on('activate', () => {
 // Don't show the app in the doc
 app.dock.hide()
 
-ipcMain.on('link-clicked', (event, arg) => {
-  if (arg) shell.openExternal(arg);
-  // event.returnValue = 'pong'
-})
+const setGlobalShortcuts = () => {
+  globalShortcut.register(
+    SHORTCUTS.TOGGLE_MONO, 
+    runMonoStereoToggleRoutine
+  )
+}
 
 
 const createWindow = () => {
@@ -96,15 +95,9 @@ const createWindow = () => {
   window.on('closed', () => {
     window = null  
   })
-
-  
-
-  // Hide the window when it loses focus
-  // window.on('blur', () => {
-  //   if (!window.webContents.isDevToolsOpened()) {
-  //     window.hide()
-  //   }
-  // })
+  window.on('blur', () => {
+    window.hide()
+  })
 
   const menu = Menu.buildFromTemplate([
     {
@@ -128,11 +121,6 @@ const createWindow = () => {
     }
   ]);
   Menu.setApplicationMenu(menu);
-
-  globalShortcut.register(
-    SHORTCUTS.TOGGLE_MONO, 
-    runMonoStereoToggleRoutine
-  )
 }
 
 
@@ -155,10 +143,9 @@ const createTray = () => {
       click () {
         showAboutWindow()
       },
-      // accelerator: SHORTCUTS.TOGGLE_MONO,
     },
     { 
-      label: 'Exit', 
+      label: 'Quit Switcher', 
       click () {
         app.quit()
       }
@@ -171,7 +158,7 @@ const showAboutWindow = () => {
   if (!window) {
     createWindow()
   } else {
-    window.focus()
+    window.show()
   }
 }
 
