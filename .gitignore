@@ -64,6 +64,7 @@ spec/.hash
 ts-gen
 
 # Build and Release Folders
+build/
 bin-debug/
 bin-release/
 [Oo]bj/

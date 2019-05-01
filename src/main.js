@@ -7,20 +7,25 @@ const {
   Tray,
   systemPreferences,
 } = require('electron')
-const { runMonoStereoToggleAction } = require('./monoStereoSwitch')
 const { 
-  showNotification, 
+  runMonoStereoToggleAction,
+  getCurrentValueOfMonoStereo,
+ } = require('./monoStereoSwitch')
+const { 
+  showAudioSwitchedNotification, 
 } = require('./utils')
 const { CHANNELS, SHORTCUTS } = require('./constants')
 const path = require('path')
 
-// Enable live reload for all the files inside your project directory
-require('electron-reload')(__dirname, {
-  //   // Enable live reload for Electron too
-  //   // Starting new electron process
-  //   // Note that the path to electron may vary according to the main file
-  //   electron: require(`${__dirname}/node_modules/electron`)
-})
+if (process.env.NODE_ENV === 'development') { 
+  // Enable live reload for all the files inside your project directory
+  require('electron-reload')(__dirname, {
+    //   // Enable live reload for Electron too
+    //   // Starting new electron process
+    //   // Note that the path to electron may vary according to the main file
+    //   electron: require(`${__dirname}/node_modules/electron`)
+  })
+}
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -74,11 +79,12 @@ const setGlobalShortcuts = () => {
 
 
 const createWindow = () => {
+  const icon = path.join(__dirname, `../app/assets/icons/png/icon_512x512@2x.png`)
   window = new BrowserWindow({
+    icon,
     width: 400,
     height: 350,
     center: true,
-    icon: 'app/assets/icons/png/icon_512x512@2x.png',
     fullscreen: false,
     fullscreenable: false,
     resizable: false,
@@ -98,36 +104,41 @@ const createWindow = () => {
   window.on('blur', () => {
     window.hide()
   })
+  // window.webContents.openDevTools()
 
   const menu = Menu.buildFromTemplate([
     {
       label: 'Menu',
       submenu: [
         { 
-          label: '🦊 Toggle mono',
+          label: 'Toggle mono',
           click () {
-            // showNotification();
+            runMonoStereoToggleRoutine();
           },
           accelerator: SHORTCUTS.TOGGLE_MONO,
         },
         { type: 'separator' },
         { 
-          label: '🧿 Exit', 
+          label: 'About', 
+          click () {
+            showAboutWindow()
+          },
+        },
+        { 
+          label: 'Quit Switcher', 
           click () {
             app.quit()
           }
-        },
+        }
       ]
     }
   ]);
   Menu.setApplicationMenu(menu);
 }
 
-
-
 const createTray = () => {
-  const themeAddon = theme === 'dark' ? '-dark_theme' : ''
-  tray = new Tray(path.join(`app/images/icon-tray${themeAddon}.png`))
+  const themePostfix = theme === 'dark' ? '-dark_theme' : ''
+  tray = new Tray(path.join(__dirname, `../app/images/icon-tray${themePostfix}.png`))
 
   const contextMenu = Menu.buildFromTemplate([
     { 
@@ -149,9 +160,14 @@ const createTray = () => {
       click () {
         app.quit()
       }
-     }
+    }
   ])
   tray.setContextMenu(contextMenu)
+
+  getCurrentValueOfMonoStereo((value) => {
+    const isMono = value === CHANNELS.MONO
+    updateTray(isMono)
+  })
 }
 
 const showAboutWindow = () => {
@@ -165,7 +181,7 @@ const showAboutWindow = () => {
 const updateTray = (active = false) => {
   const activePostfix = active ? '-active' : '';
   const themePostfix = theme === 'dark' ? '-dark_theme' : ''
-  tray.setImage(path.join(`app/images/icon-tray${activePostfix}${themePostfix}.png`))
+  tray.setImage(path.join(__dirname, `../app/images/icon-tray${activePostfix}${themePostfix}.png`))
 }
 
 
@@ -174,8 +190,14 @@ const setOSTheme = () => {
 }
 
 const runMonoStereoToggleRoutine = () => {
+  // getCurrentValueOfMonoStereo((value) => {
+  //   const isMono = value === CHANNELS.MONO
+  //   updateTray(isMono)
+  //   showAudioSwitchedNotification(value)
+  // })
   runMonoStereoToggleAction((value) => {
-    showNotification(value)
-    updateTray(value === CHANNELS.MONO)
+    showAudioSwitchedNotification(value)
+    const isMono = value === CHANNELS.MONO
+    updateTray(isMono)
   })
 }

@@ -1,9 +1,12 @@
 const path = require('path')
 const applescript = require('applescript')
 const { CHANNELS, SHORTCUTS } = require('./constants')
+const { showErrorNotification } = require('./utils')
+const log = require('electron-log')
 
 const scriptDoSwitch = path.join(__dirname, './applescript/monoStereoSwitch.applescript')
 const scriptGetValue = path.join(__dirname, './applescript/getMonoStereoState.applescript')
+
 
 const runMonoStereoToggleAction = (callback) => {
   toggleMonoStereo( (value) => {
@@ -12,6 +15,8 @@ const runMonoStereoToggleAction = (callback) => {
         callback(value)
       } else {
         console.log('🚧 applescript failed to exec. value is:', value)
+        showErrorNotification(value)
+        log.warn('🚧 ', value);
       }
     })
   })
@@ -29,6 +34,8 @@ const runScript = (script, callback) => {
   applescript.execFile(script, (err, rtn) => {
     if (err) {
       console.log('🚧 applescript failed to exec', err)
+      showErrorNotification(err)
+      log.warn('🚧 ', err);
     } else {
       callback(rtn)
     }
@@ -36,5 +43,6 @@ const runScript = (script, callback) => {
 }
 
 module.exports = {
-  runMonoStereoToggleAction
+  runMonoStereoToggleAction,
+  getCurrentValueOfMonoStereo,
 }

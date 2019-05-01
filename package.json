@@ -1,15 +1,19 @@
 {
   "name": "mono-switch",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Simple STEREO / MONO switcher for system audio",
   "main": "src/main.js",
   "scripts": {
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "package": "electron-packager ./ 'Mono Switch' --platform=darwin --out=./build/ --overwrite --icon=./app/assets/icons/mac/icon_512x512\\@2x.icns"
   },
   "keywords": [
-    "stereo",
-    "mono"
+    "mono-sound",
+    "stereo-sound",
+    "mono-stereo",
+    "electron-app",
+    "macos"
   ],
   "author": "Andy Burkovetsky",
   "license": "ISC",
@@ -21,6 +25,7 @@
   "dependencies": {
     "applescript": "^1.0.0",
     "auto-launch": "^5.0.5",
-    "electron-native-notification": "^1.2.1"
+    "electron-native-notification": "^1.2.1",
+    "electron-log": "^3.0.5"
   }
 }
