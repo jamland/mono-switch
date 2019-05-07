@@ -1,4 +1,6 @@
-const { 
+'use strict'
+
+import {
   app, 
   shell,
   BrowserWindow, 
@@ -6,36 +8,40 @@ const {
   globalShortcut,
   Tray,
   systemPreferences,
-} = require('electron')
-const { 
+} from 'electron'
+import * as path from 'path'
+import { format as formatUrl } from 'url'
+
+import { 
   runMonoStereoToggleAction,
-  getCurrentValueOfMonoStereo,
- } = require('./monoStereoSwitch')
-const { 
-  showAudioSwitchedNotification, 
-} = require('./utils')
-const { CHANNELS, SHORTCUTS } = require('./constants')
-const path = require('path')
+  getCurrentValueOfMonoStereo
+} from '../utils/monoStereoSwitch'
+import { showAudioSwitchedNotification } from '../utils/utils'
+import { CHANNELS, SHORTCUTS } from '../utils/constants'
 
-if (process.env.NODE_ENV === 'development') { 
-  // Enable live reload for all the files inside your project directory
-  require('electron-reload')(__dirname, {
-    //   // Enable live reload for Electron too
-    //   // Starting new electron process
-    //   // Note that the path to electron may vary according to the main file
-    //   electron: require(`${__dirname}/node_modules/electron`)
-  })
-}
+const isDevelopment = process.env.NODE_ENV !== 'production'
 
-// Keep a global reference of the window object, if you don't, the window will
-// be closed automatically when the JavaScript object is garbage collected.
-let window;
-let tray = undefined;
+// global reference to mainWindow (necessary to prevent window from being garbage collected)
+let mainWindow
+let tray;
 let theme;
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
+// quit application when all windows are closed
+app.on('window-all-closed', () => {
+  // on macOS it is common for applications to stay open until the user explicitly quits
+  if (process.platform !== 'darwin') {
+    app.quit()
+  }
+})
+
+app.on('activate', () => {
+  // on macOS it is common to re-create a window even after all windows have been closed
+  if (mainWindow === null) {
+    mainWindow = createMainWindow()
+  }
+})
+
+// create main BrowserWindow when electron is ready
 app.on('ready', () => {
   if (process.platform === 'darwin') {
     setOSTheme()
@@ -44,28 +50,11 @@ app.on('ready', () => {
       updateTheme,
       )
   }
+  
   createTray()
   setGlobalShortcuts()
 })
 
-const updateTheme = () => {
-  setOSTheme()
-  updateTray()
-}
-
-// Quit when all windows are closed.
-// app.on('window-all-closed', () => {
-//   // On macOS it is common for applications and their menu bar
-//   // to stay active until the user quits explicitly with Cmd + Q
-//   if (process.platform !== 'darwin') {
-//     app.quit()
-//   }
-// })
-
-app.on('activate', () => {
-  // On macOS it's common to re-create a window in the app when the
-  // dock icon is clicked and there are no other windows open.
-})
 
 // Don't show the app in the doc
 app.dock.hide()
@@ -78,9 +67,16 @@ const setGlobalShortcuts = () => {
 }
 
 
-const createWindow = () => {
-  const icon = path.join(__dirname, `../app/assets/icons/png/icon_512x512@2x.png`)
-  window = new BrowserWindow({
+
+
+
+
+
+
+
+const createMainWindow = () => {
+  const icon = path.join(__dirname, `../assets/icons/png/icon_512x512@2x.png`)
+  const window = new BrowserWindow({
     icon,
     width: 400,
     height: 350,
@@ -94,17 +90,36 @@ const createWindow = () => {
       backgroundThrottling: false
     }
   })
-  window.loadFile('app/index.html')
-  window.once('ready-to-show', () => {
-    window.show()
-  })
+
+  if (isDevelopment) {
+    // window.webContents.openDevTools()
+  }
+
+  if (isDevelopment) {
+    window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`)
+  }
+  else {
+    window.loadURL(formatUrl({
+      pathname: path.join(__dirname, 'index.html'),
+      protocol: 'file',
+      slashes: true
+    }))
+  }
+
   window.on('closed', () => {
-    window = null  
+    mainWindow = null
   })
+
   window.on('blur', () => {
     window.hide()
   })
-  // window.webContents.openDevTools()
+
+  window.webContents.on('devtools-opened', () => {
+    window.focus()
+    setImmediate(() => {
+      window.focus()
+    })
+  })
 
   const menu = Menu.buildFromTemplate([
     {
@@ -134,11 +149,14 @@ const createWindow = () => {
     }
   ]);
   Menu.setApplicationMenu(menu);
+
+  mainWindow = window
 }
 
 const createTray = () => {
   const themePostfix = theme === 'dark' ? '-dark_theme' : ''
-  tray = new Tray(path.join(__dirname, `../app/images/icon-tray${themePostfix}.png`))
+  tray = new Tray(path.join(__dirname, `../assets/images/icon-tray${themePostfix}.png`))
+  
 
   const contextMenu = Menu.buildFromTemplate([
     { 
@@ -170,31 +188,37 @@ const createTray = () => {
   })
 }
 
+
+
+
+
+
+
 const showAboutWindow = () => {
-  if (!window) {
-    createWindow()
+  if (!mainWindow) {
+    createMainWindow()
   } else {
-    window.show()
+    mainWindow.show()
   }
 }
 
-const updateTray = (active = false) => {
-  const activePostfix = active ? '-active' : '';
-  const themePostfix = theme === 'dark' ? '-dark_theme' : ''
-  tray.setImage(path.join(__dirname, `../app/images/icon-tray${activePostfix}${themePostfix}.png`))
+const updateTheme = () => {
+  setOSTheme()
+  updateTray()
 }
-
 
 const setOSTheme = () => {
   theme = systemPreferences.isDarkMode() ? 'dark' : 'light'
 }
 
+const updateTray = (active = false) => {
+  const activePostfix = active ? '-active' : '';
+  const themePostfix = theme === 'dark' ? '-dark_theme' : ''
+  tray.setImage(path.join(__dirname, `../assets/images/icon-tray${activePostfix}${themePostfix}.png`))
+}
+
+
 const runMonoStereoToggleRoutine = () => {
-  // getCurrentValueOfMonoStereo((value) => {
-  //   const isMono = value === CHANNELS.MONO
-  //   updateTray(isMono)
-  //   showAudioSwitchedNotification(value)
-  // })
   runMonoStereoToggleAction((value) => {
     showAudioSwitchedNotification(value)
     const isMono = value === CHANNELS.MONO

@@ -1,11 +1,11 @@
-const path = require('path')
-const applescript = require('applescript')
-const { CHANNELS, SHORTCUTS } = require('./constants')
-const { showErrorNotification } = require('./utils')
-const log = require('electron-log')
+import path from 'path'
+import applescript from 'applescript'
+import { CHANNELS, SHORTCUTS } from './constants'
+import { showErrorNotification } from './utils'
+import log from 'electron-log'
 
-const scriptDoSwitch = path.join(__dirname, './applescript/monoStereoSwitch.applescript')
-const scriptGetValue = path.join(__dirname, './applescript/getMonoStereoState.applescript')
+const scriptDoSwitch = path.join(__dirname, '../applescript/monoStereoSwitch.applescript')
+const scriptGetValue = path.join(__dirname, '../applescript/getMonoStereoState.applescript')
 
 
 const runMonoStereoToggleAction = (callback) => {
@@ -42,7 +42,7 @@ const runScript = (script, callback) => {
   });
 }
 
-module.exports = {
+export {
   runMonoStereoToggleAction,
   getCurrentValueOfMonoStereo,
 }

@@ -1,13 +1,11 @@
-const Notification = require('electron-native-notification')
-const { 
-  dialog
-} = require('electron')
+import Notification from 'electron-native-notification'
+import { dialog } from 'electron'
 
-const { 
-  iconStereo,
-  iconMono,
-} = require('./iconBase64')
-const { CHANNELS, SHORTCUTS } = require('./constants')
+// import { iconStereo, iconMono } from './iconBase64'
+import { CHANNELS, SHORTCUTS } from './constants'
+import iconStereo from '../assets/images/green-circle.png'
+import iconMono from '../assets/images/red-circle.png'
+
 
 const showErrorNotification = (value) => {
   const message = getErrorMessage(value)
@@ -42,7 +40,7 @@ const getErrorMessage = (error) => {
 }
 
 
-module.exports = {
+export {
   showErrorNotification,
   showAudioSwitchedNotification
 }

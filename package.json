@@ -1,12 +1,14 @@
 {
   "name": "mono-switch",
-  "version": "0.9.1",
+  "version": "1.0.0",
+  "license": "MIT",
   "description": "Simple STEREO / MONO switcher for system audio",
-  "main": "src/main.js",
+  "author": "Andy Burkovetsky",
   "scripts": {
-    "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "package": "electron-packager ./ 'Mono Switch' --platform=darwin --out=./build/ --overwrite --icon=./app/assets/icons/mac/icon_512x512\\@2x.icns"
+    "dev": "electron-webpack dev",
+    "compile": "electron-webpack",
+    "dist": "yarn compile && electron-builder",
+    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "keywords": [
     "mono-sound",
@@ -15,17 +17,19 @@
     "electron-app",
     "macos"
   ],
-  "author": "Andy Burkovetsky",
-  "license": "ISC",
-  "devDependencies": {
-    "electron": "^4.1.3",
-    "electron-packager": "^13.1.1",
-    "electron-reload": "^1.4.0"
-  },
   "dependencies": {
     "applescript": "^1.0.0",
-    "auto-launch": "^5.0.5",
+    "electron-log": "^3.0.5",
     "electron-native-notification": "^1.2.1",
-    "electron-log": "^3.0.5"
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "source-map-support": "^0.5.10"
+  },
+  "devDependencies": {
+    "@babel/preset-react": "^7.0.0",
+    "electron": "4.0.1",
+    "electron-builder": "20.38.4",
+    "electron-webpack": "^2.6.2",
+    "webpack": "4.28.4"
   }
 }

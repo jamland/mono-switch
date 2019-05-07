@@ -6,7 +6,7 @@ const CHANNELS = {
   STEREO: 'stereo',
 }
 
-module.exports = {
+export {
   SHORTCUTS,
   CHANNELS
 }
