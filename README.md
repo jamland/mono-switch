@@ -18,7 +18,7 @@ macOs. Tested only with macOs Mojave, 10.14.x
 
 # Development
 
-The use of the [yarn](https://yarnpkg.com/) package manager is **strongly** recommended, as opposed to using `npm` by [electron-webpack-quick-start](https://github.com/electron-userland/electron-webpack-quick-start) used as basis for this project.
+The use of the [yarn](https://yarnpkg.com/) package manager is **strongly** recommended, as opposed to using `npm`, by [electron-webpack-quick-start](https://github.com/electron-userland/electron-webpack-quick-start) used as basis for this project.
 
 ```bash
 # install dependencies
