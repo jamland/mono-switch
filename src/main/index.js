@@ -11,13 +11,14 @@ import {
 } from 'electron'
 import * as path from 'path'
 import { format as formatUrl } from 'url'
+import log from 'electron-log'
 
 import { 
   runMonoStereoToggleAction,
   getCurrentValueOfMonoStereo
-} from '../utils/monoStereoSwitch'
-import { showAudioSwitchedNotification } from '../utils/utils'
-import { CHANNELS, SHORTCUTS } from '../utils/constants'
+} from 'common/monoStereoSwitch'
+import { showAudioSwitchedNotification } from 'common/utils'
+import { CHANNELS, SHORTCUTS } from 'common/constants'
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -50,14 +51,14 @@ app.on('ready', () => {
       updateTheme,
       )
   }
-  
+  createMainWindow()
   createTray()
   setGlobalShortcuts()
 })
 
 
 // Don't show the app in the doc
-app.dock.hide()
+// app.dock.hide()
 
 const setGlobalShortcuts = () => {
   globalShortcut.register(
@@ -71,11 +72,8 @@ const setGlobalShortcuts = () => {
 
 
 
-
-
-
 const createMainWindow = () => {
-  const icon = path.join(__dirname, `../assets/icons/png/icon_512x512@2x.png`)
+  const icon = path.join(__static, `/icons/png/icon_512x512@2x.png`)
   const window = new BrowserWindow({
     icon,
     width: 400,
@@ -100,7 +98,7 @@ const createMainWindow = () => {
   }
   else {
     window.loadURL(formatUrl({
-      pathname: path.join(__dirname, 'index.html'),
+      pathname: path.join(__static, 'index.html'),
       protocol: 'file',
       slashes: true
     }))
@@ -155,7 +153,7 @@ const createMainWindow = () => {
 
 const createTray = () => {
   const themePostfix = theme === 'dark' ? '-dark_theme' : ''
-  tray = new Tray(path.join(__dirname, `../assets/images/icon-tray${themePostfix}.png`))
+  tray = new Tray(path.join(__static, `/images/icon-tray${themePostfix}.png`))
   
 
   const contextMenu = Menu.buildFromTemplate([
@@ -214,7 +212,7 @@ const setOSTheme = () => {
 const updateTray = (active = false) => {
   const activePostfix = active ? '-active' : '';
   const themePostfix = theme === 'dark' ? '-dark_theme' : ''
-  tray.setImage(path.join(__dirname, `../assets/images/icon-tray${activePostfix}${themePostfix}.png`))
+  tray.setImage(path.join(__static, `/images/icon-tray${activePostfix}${themePostfix}.png`))
 }
 
 

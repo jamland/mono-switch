@@ -5,10 +5,14 @@
   "description": "Simple STEREO / MONO switcher for system audio",
   "author": "Andy Burkovetsky",
   "scripts": {
+    "start": "yarn run dev",
     "dev": "electron-webpack dev",
     "compile": "electron-webpack",
     "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
+  },
+  "build": {
+    "appId": "tv.jamland.monoSwitch"
   },
   "keywords": [
     "mono-sound",

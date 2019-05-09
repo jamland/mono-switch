@@ -1,11 +1,10 @@
 import Notification from 'electron-native-notification'
 import { dialog } from 'electron'
+import * as path from 'path'
 
-// import { iconStereo, iconMono } from './iconBase64'
 import { CHANNELS, SHORTCUTS } from './constants'
-import iconStereo from '../assets/images/green-circle.png'
-import iconMono from '../assets/images/red-circle.png'
-
+const iconStereo = path.join(__static, '/images/green-circle.png')
+const iconMono = path.join(__static, '/images/red-circle.png')
 
 const showErrorNotification = (value) => {
   const message = getErrorMessage(value)

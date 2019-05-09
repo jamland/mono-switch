@@ -1,15 +1,15 @@
 import path from 'path'
 import applescript from 'applescript'
-import { CHANNELS, SHORTCUTS } from './constants'
-import { showErrorNotification } from './utils'
 import log from 'electron-log'
 
-const scriptDoSwitch = path.join(__dirname, '../applescript/monoStereoSwitch.applescript')
-const scriptGetValue = path.join(__dirname, '../applescript/getMonoStereoState.applescript')
+import { CHANNELS, SHORTCUTS } from './constants'
+import { showErrorNotification } from './utils'
+const scriptDoSwitch = path.join(__static, '/applescript/monoStereoSwitch.applescript')
+const scriptGetValue = path.join(__static, '/applescript/getMonoStereoState.applescript')
 
 
 const runMonoStereoToggleAction = (callback) => {
-  toggleMonoStereo( (value) => {
+  toggleMonoStereo( (value) => { 
     getCurrentValueOfMonoStereo( (value) => {
       if (value === CHANNELS.STEREO || value === CHANNELS.MONO) {
         callback(value)
