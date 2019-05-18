@@ -12,7 +12,12 @@
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
   },
   "build": {
-    "appId": "tv.jamland.monoSwitch"
+    "appId": "tv.jamland.monoSwitch",
+    "mac": {
+      "category": "public.app-category.music",
+      "identity": "TODO",
+      "icon": "src/assets/icons/mac/icon_512x512@2x.icns"
+    }
   },
   "keywords": [
     "mono-sound",
