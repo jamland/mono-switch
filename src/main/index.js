@@ -12,6 +12,7 @@ import {
 import * as path from 'path'
 import { format as formatUrl } from 'url'
 import log from 'electron-log'
+import { autoUpdater } from "electron-updater"
 
 import { 
   runMonoStereoToggleAction,
@@ -51,7 +52,6 @@ app.on('ready', () => {
       updateTheme,
       )
   }
-  createMainWindow()
   createTray()
   setGlobalShortcuts()
 })

@@ -41,6 +41,11 @@ yarn dist
 yarn dist:dir
 ```
 
+## This project uses
+
++ [electron-webpack-quick-start](https://github.com/electron-userland/electron-webpack-quick-start) 
++ [electron-webpack](https://github.com/electron-userland/electron-webpack) 
++ [electron-builder](https://www.electron.build) 
 
 # License
 

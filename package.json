@@ -4,19 +4,30 @@
   "license": "MIT",
   "description": "Simple STEREO / MONO switcher for system audio",
   "author": "Andy Burkovetsky",
+  "repository": {
+    "type" : "git",
+    "url": "https://github.com/jamland/mono-switch.git"
+  },
   "scripts": {
     "start": "yarn run dev",
     "dev": "electron-webpack dev",
     "compile": "electron-webpack",
     "dist": "yarn compile && electron-builder",
-    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null"
+    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
+    "release": "yarn compile && electron-builder -p always"
   },
   "build": {
     "appId": "tv.jamland.monoSwitch",
+    "productName": "Mono Switch",
     "mac": {
       "category": "public.app-category.music",
-      "identity": "TODO",
-      "icon": "src/assets/icons/mac/icon_512x512@2x.icns"
+      "icon": "src/assets/icons/mac/icon_512x512@2x.icns",
+      "publish": {
+        "provider": "github",
+        "host": "github.com",
+        "protocol": "https",
+        "publishAutoUpdate": "true"
+      }
     }
   },
   "keywords": [
@@ -30,6 +41,7 @@
     "applescript": "^1.0.0",
     "electron-log": "^3.0.5",
     "electron-native-notification": "^1.2.1",
+    "electron-updater": "^4.0.6",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "source-map-support": "^0.5.10"
