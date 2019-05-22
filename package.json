@@ -6,7 +6,7 @@
   "author": "Andy Burkovetsky",
   "repository": {
     "type" : "git",
-    "url": "https://github.com/jamland/mono-switch.git"
+    "url": "git@github.com:jamland/mono-switch.git"
   },
   "scripts": {
     "start": "yarn run dev",
@@ -19,15 +19,20 @@
   "build": {
     "appId": "tv.jamland.monoSwitch",
     "productName": "Mono Switch",
+    "publish": {
+      "provider": "github",
+      "host": "github.com",
+      "protocol": "https",
+      "publishAutoUpdate": "true",
+      "repo": "mono-switch",
+      "owner": "jamland",
+      "url": "git@github.com:jamland/mono-switch.git",
+      "private": "false"
+    },
     "mac": {
       "category": "public.app-category.music",
       "icon": "src/assets/icons/mac/icon_512x512@2x.icns",
-      "publish": {
-        "provider": "github",
-        "host": "github.com",
-        "protocol": "https",
-        "publishAutoUpdate": "true"
-      }
+      "publish": ["github"]
     }
   },
   "keywords": [
