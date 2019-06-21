@@ -2,9 +2,11 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import pjson from '../../package.json'
-import ImgIcon from '../assets/icons/png/icon_512x512.png'
-import ImgTitle from '../assets/images/app-title.png'
-import "../assets/styles/app.css";
+import "../___assets/styles/app.css";
+
+import { CHANNELS, SHORTCUTS } from 'common/constants'
+import ImgIcon from '../___assets/icons/png/icon_512x512.png'
+import ImgTitle from '../___assets/images/app-title.png'
 
 function App() {
   const linkClickHandler = (e, href) => {
