@@ -5,7 +5,7 @@
   "description": "Simple STEREO / MONO switcher for system audio",
   "author": "Andy Burkovetsky",
   "repository": {
-    "type" : "git",
+    "type": "git",
     "url": "git@github.com:jamland/mono-switch.git"
   },
   "scripts": {
@@ -14,7 +14,8 @@
     "compile": "electron-webpack",
     "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
-    "release": "yarn compile && electron-builder -p always"
+    "release": "yarn compile && electron-builder -p always",
+    "lint": "eslint"
   },
   "build": {
     "appId": "tv.jamland.monoSwitch",
@@ -31,8 +32,10 @@
     },
     "mac": {
       "category": "public.app-category.music",
-      "icon": "src/assets/icons/mac/icon_512x512@2x.icns",
-      "publish": ["github"]
+      "icon": "static/icons/mac/icon_512x512@2x.icns",
+      "publish": [
+        "github"
+      ]
     }
   },
   "keywords": [
@@ -43,10 +46,10 @@
     "macos"
   ],
   "dependencies": {
-    "applescript": "^1.0.0",
     "electron-log": "^3.0.5",
     "electron-native-notification": "^1.2.1",
     "electron-updater": "^4.0.6",
+    "node-osascript": "^2.1.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "source-map-support": "^0.5.10"
@@ -56,6 +59,16 @@
     "electron": "4.0.1",
     "electron-builder": "20.38.4",
     "electron-webpack": "^2.6.2",
+    "electron-webpack-eslint": "^5.0.0",
+    "eslint-plugin-react": "^7.14.2",
+    "husky": "^3.0.0",
+    "source-map": "^0.7.3",
     "webpack": "4.28.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint",
+      "pre-push": "yarn lint"
+    }
   }
 }

@@ -1,8 +1,9 @@
 import Notification from 'electron-native-notification'
 import { dialog } from 'electron'
+import log from 'electron-log'
 import * as path from 'path'
 
-import { CHANNELS, SHORTCUTS } from './constants'
+import { CHANNELS } from './constants'
 const iconStereo = path.join(__static, '/images/green-circle.png')
 const iconMono = path.join(__static, '/images/red-circle.png')
 
@@ -18,8 +19,9 @@ const showErrorNotification = (value) => {
 
 const showAudioSwitchedNotification = (value) => {
   // hide notification in 5 sec or let it stay
+  log.info('⚀ routine: show notification: ', value);
   const icon = value === CHANNELS.STEREO ? iconStereo : iconMono
-  const notification = new Notification(
+  new Notification(
     `${value.toUpperCase()} Audio`, 
     { 
       body: `Audio played as ${value.toUpperCase()}`,
