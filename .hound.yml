@@ -1,0 +1,4 @@
+eslint:
+  enabled: true
+  esversion: 6
+  config_file: .eslintrc.js

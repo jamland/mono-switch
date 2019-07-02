@@ -2,7 +2,6 @@
 
 import {
   app,
-  shell,
   BrowserWindow,
   Menu,
   globalShortcut,
@@ -12,7 +11,7 @@ import {
 import * as path from "path";
 import { format as formatUrl } from "url";
 import log from "electron-log";
-import { autoUpdater } from "electron-updater";
+// import { autoUpdater } from "electron-updater";
 
 import {
   runMonoStereoToggleAction,
@@ -20,20 +19,8 @@ import {
 } from 'common/monoStereoSwitch'
 import {
   showAudioSwitchedNotification,
-  showErrorNotification
 } from "common/utils";
 import { CHANNELS, SHORTCUTS } from "common/constants";
-
-// import path from 'path'
-import osascript from "node-osascript";
-const scriptDoSwitch = path.join(
-  __static,
-  "/applescript/monoStereoSwitch.applescript"
-);
-const scriptGetValue = path.join(
-  __static,
-  "/applescript/getMonoStereoState.applescript"
-);
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 

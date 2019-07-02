@@ -14,7 +14,8 @@
     "compile": "electron-webpack",
     "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
-    "release": "yarn compile && electron-builder -p always"
+    "release": "yarn compile && electron-builder -p always",
+    "lint": "eslint"
   },
   "build": {
     "appId": "tv.jamland.monoSwitch",
@@ -58,7 +59,16 @@
     "electron": "4.0.1",
     "electron-builder": "20.38.4",
     "electron-webpack": "^2.6.2",
+    "electron-webpack-eslint": "^5.0.0",
+    "eslint-plugin-react": "^7.14.2",
+    "husky": "^3.0.0",
     "source-map": "^0.7.3",
     "webpack": "4.28.4"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn lint",
+      "pre-push": "yarn lint"
+    }
   }
 }
