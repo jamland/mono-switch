@@ -1,22 +1,29 @@
-# Goal
+# Mono Switch
 
-The only purpose of this tool is quickly switch between MONO / STEREO audio output using shortcuts.
+The only purpose of this tool is quickly switch between MONO / STEREO audio output using menu or shortcuts.   
+It can be done with keyboard shortcuts: `CTL + CMD + M`   
+or via tray menu item.
 
-# How To Use?
+## Get Mono Switch
+[Download the latest release](https://github.com/jamland/mono-switch/releases/download/v1.0.0/Mono.Switch-1.0.0.dmg) (macOS only)
 
-// TODO: Need generate macOs app from this files
 
-# System Requirements
-
+## System Requirements
 
 macOs. Tested only with macOs Mojave, 10.14.x
 
-# Getting Started
+## Development Notes
+
+### How To Use?
+
+// TODO: Need generate macOs app from this files
+
+### Getting Started
 
 // TODO: follow this template: 
 // https://gist.github.com/PurpleBooth/109311bb0361f32d87a2
 
-# Development
+### Development
 
 The use of the [yarn](https://yarnpkg.com/) package manager is **strongly** recommended, as opposed to using `npm`, by [electron-webpack-quick-start](https://github.com/electron-userland/electron-webpack-quick-start) used as basis for this project.
 
@@ -25,7 +32,7 @@ The use of the [yarn](https://yarnpkg.com/) package manager is **strongly** reco
 yarn
 ```
 
-## Development Scripts
+### Development Scripts
 
 ```bash
 # run application in development mode
@@ -41,16 +48,16 @@ yarn dist
 yarn dist:dir
 ```
 
-## This project uses
+### This project uses
 
 + [electron-webpack-quick-start](https://github.com/electron-userland/electron-webpack-quick-start) 
 + [electron-webpack](https://github.com/electron-userland/electron-webpack) 
 + [electron-builder](https://www.electron.build) 
 
-# License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/jamland/mono-switch/blob/master/LICENSE) file for details
 
-# Privacy Policy
+## Privacy Policy
 
 Simply, NO personal data is collected, stored or shared w/ 3rd parties
