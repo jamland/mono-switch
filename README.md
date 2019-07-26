@@ -5,7 +5,7 @@ It can be done with keyboard shortcuts: `CTL + CMD + M`
 or via tray menu item.
 
 ## Get Mono Switch
-[Download the latest release](https://github.com/jamland/mono-switch/releases/download/v1.0.0/Mono.Switch-1.0.0.dmg) (macOS only)
+[👉 Download the latest release](https://github.com/jamland/mono-switch/releases/download/v1.0.0/Mono.Switch-1.0.0.dmg) (macOS only)
 
 
 ## System Requirements
